@@ -13,23 +13,41 @@ public class Beat : MonoBehaviour {
     private float timer;
     private bool beating;
     private bool dying;
-    private AudioSource beat; 
+    private AudioSource beat;
+    private int stressTimer; // cracks you if you're at too high a stress for too long
 
     private void Start()
     {
         beat = GetComponent<AudioSource>();
         // sets the pitch higher as the heartbeats get faster and vice versa
         timer = 0;
+        stressTimer = 0;
         beating = false;
         dying = false;
+        InvokeRepeating("Stressed", 2.0f, 1.0f);
         SetPitch();
         SetColor();
-        //for(int i = 1; i < 5; i++) {
-        //    Crack(i);
-        //}
     }
 
     void FixedUpdate () {
+        /*// For testing death
+        if(Time.time == 1)
+        {
+            Crack(1);
+        }
+        if (Time.time == 3)
+        {
+            Crack(2);
+        }
+        if (Time.time == 5)
+        {
+            Crack(3);
+        }
+        if (Time.time == 7)
+        {
+            Crack(4);
+        }
+        */ 
         if (dying)
         {
             StartCoroutine(HandleIt());
@@ -118,6 +136,7 @@ public class Beat : MonoBehaviour {
         {
             dying = true;
         }
+        iTween.ShakePosition(gameObject, new Vector3(1f, 1f, 0f), 0.5f);
     }
 
     public void Die()
@@ -136,5 +155,22 @@ public class Beat : MonoBehaviour {
         yield return new WaitForSeconds(1.5f);
         dying = false;
         Destroy(gameObject);
+    }
+
+    private void Stressed()
+    {
+        if (frequency <= 20)
+        {
+            stressTimer += 20 / (int)frequency;
+        }
+        else
+        {
+            stressTimer = 0;
+        }
+        if (stressTimer >= 20)
+        {
+            Crack((int)cracks + 1);
+            stressTimer = 0;
+        }
     }
 }

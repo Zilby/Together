@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour {
 	public Text stress;
 	public Text compassion;
 	public Text love;
-	public Text gameover;
+	public GameObject gameover;
 	public bool over;
 	public List<Button> options; 
 	public Button dialogue; 
@@ -26,21 +26,31 @@ public class GameController : MonoBehaviour {
 		slightRedirect = false;
 		location = 0;
 		h = heart.GetComponent<Beat>();
+        gameover.SetActive(false);
 		InitializeText();
 		TransitionToTalk ();
 	}
 
 	public void Update() {
 		print (location);
+        if(h.cracks == 4)
+        {
+            foreach (Button b in options)
+            {
+                b.GetComponent<Text>().text = "";
+            }
+            dialogue.GetComponent<Text>().text = "";
+        }
 		if(over) {
 
-		} else if (heart == null) {
+        } else if (heart == null) {
 			stress.text = "";
 			compassion.text = "";
 			love.text = "";
 			string[] messages = { "Again?", "Maybe Next Time", "Broken", "The End", 
-				"It Was Never Real", "Get Over It" }; 
-			gameover.text = messages [Random.Range (0, 6)];
+				"It Was Never Real", "Get Over It", "Love Is A Myth" };
+            gameover.SetActive(true);
+			gameover.GetComponent<Button>().GetComponent<Text>().text = messages [Random.Range (0, 7)];
 			over = true;
 		} else {
 			stress.text = "Stress: " + (100 - h.frequency);
@@ -50,12 +60,13 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void Talk() {
-		if(narrating) {
+		if(narrating && !over) {
 			if (curr == dialogueTexts [location].Length) {
 				narrating = false; 
 				curr = 0;
 				dialogue.GetComponent<Text> ().text = "";
 				if (slightRedirect) {
+                    print("here");
 					location--;
 					slightRedirect = false;
 				}
@@ -73,7 +84,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void OptionOne() {
-		if(!narrating) {
+		if(!narrating && !over) {
 			if (location == 0) {
 				location = 1; 
 			}
@@ -87,7 +98,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void OptionTwo() {
-		if(!narrating) {
+		if(!narrating && !over) {
 			if (location == 0) {
 				location = 2; 
 			}
@@ -102,7 +113,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void OptionThree() {
-		if(!narrating) {
+		if(!narrating && !over) {
 			if (location == 0) {
 				location = 3; 
 				h.love += 10f;
@@ -117,7 +128,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void OptionFour() {
-		if(!narrating) {
+		if(!narrating && !over) {
 			if (location == 0) {
 				location = 4; 
 				h.frozen += 30f; 
@@ -139,7 +150,7 @@ public class GameController : MonoBehaviour {
  	}
 
 	public void InitializeText() {
-		string[] dialogue0 = { "Oh hey didnt see you there", "My name is A" };
+		string[] dialogue0 = { "Oh hey didnt see you there", "My name is Q" };
 		dialogueTexts.Add (dialogue0);
 		string[] dialogue1 = {"You go to Brooklyn Tech right?", 
 			"Seems like we will be sharing this commute by train together quite often",
@@ -156,12 +167,12 @@ public class GameController : MonoBehaviour {
 		};
 		dialogueTexts.Add (dialogue3);
 		string[] dialogue4 = {"Ooooookaaay.. Ill catch you around I guess", "* Several weeks pass *",
-			"* You attend classes but remain distant with your peers *", "* Still, for some reason A seems" +
-			"to have taken an interest in you *"
+			"* You attend classes but remain distant with your peers *",
+            "* Still, for some reason A seems to have taken an interest in you *"
 		};
 		dialogueTexts.Add (dialogue4);
 		string[] dialogue5 = {"Studious then huh?", "Well I guess it makes sense", 
-			"You are going to Brooklyn Tech", "Honestly I'd wake up later but my mom would have my ass"
+			"You are going to Brooklyn Tech", "Honestly Id wake up later but my mom would have my ass"
 		};
 		dialogueTexts.Add (dialogue5); // goes to 4
 		string[] dialogue6 = {"Agreeeeed", 
@@ -204,5 +215,10 @@ public class GameController : MonoBehaviour {
 		string[] options11 = { "Template" };
 		optionsTexts.Add (options11);
 	}
+
+    public void Restart()
+    {
+        Application.LoadLevel("Menu");
+    }
 }
 
