@@ -5,7 +5,8 @@ using UnityEngine;
 public class Beat : MonoBehaviour {
 
     public float frequency; //stress
-    public float frozen; //love
+    public float frozen; //compassion
+	public float love;
     public float cracks;
     public List<GameObject> cracklist;
     public GameObject blood;
@@ -54,25 +55,34 @@ public class Beat : MonoBehaviour {
             if (timer == (int)frequency * 9 / 10)
             {
                 GetComponent<Transform>().localScale = new Vector3(1f, 1f, 0);
+				ScaleLove ();
                 beating = true;
             }
             if (timer == (int)frequency * 8 / 10)
             {
                 GetComponent<Transform>().localScale = new Vector3(0.8f, 0.8f, 0);
+				ScaleLove ();
                 beating = false;
             }
             if (timer == (int)frequency * 7 / 10)
             {
                 GetComponent<Transform>().localScale = new Vector3(1f, 1f, 0);
+				ScaleLove ();
                 beating = true;
             }
             if (timer == (int)frequency * 5 / 10)
             {
                 GetComponent<Transform>().localScale = new Vector3(0.8f, 0.8f, 0);
+				ScaleLove ();
                 beating = false;
             }
+
         }
     }
+
+	public void ScaleLove() {
+		GetComponent<Transform> ().localScale = (GetComponent<Transform>().localScale/2.2f)*((love/50f) + 1);
+	}
 
     public bool GetBeating()
     {
@@ -121,9 +131,9 @@ public class Beat : MonoBehaviour {
 
     private IEnumerator HandleIt()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         Die();
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.5f);
         dying = false;
         Destroy(gameObject);
     }
