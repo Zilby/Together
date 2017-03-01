@@ -149,76 +149,74 @@ public class GameController : MonoBehaviour {
 		curr++;
  	}
 
-	public void InitializeText() {
-		string[] dialogue0 = { "Oh hey didnt see you there", "My name is Q" };
-		dialogueTexts.Add (dialogue0);
-		string[] dialogue1 = {"You go to Brooklyn Tech right?", 
-			"Seems like we will be sharing this commute by train together quite often",
-			"Assuming you regularly wake up on time that is"
-		};
-		dialogueTexts.Add (dialogue1);
-		string[] dialogue2 = {"Yeah my parents are pretty strange", 
-			"Better than being stuck with my brother &s name though"
-		};
-		dialogueTexts.Add (dialogue2);
-		string[] dialogue3 = {"Well thank you", 
-			"Kinda creepy that youd say that to a complete stranger", 
-			"But it does wonders to my self esteem"
-		};
-		dialogueTexts.Add (dialogue3);
-		string[] dialogue4 = {"Ooooookaaay.. Ill catch you around I guess", "* Several weeks pass *",
-			"* You attend classes but remain distant with your peers *",
-            "* Still, for some reason A seems to have taken an interest in you *"
-		};
-		dialogueTexts.Add (dialogue4);
-		string[] dialogue5 = {"Studious then huh?", "Well I guess it makes sense", 
-			"You are going to Brooklyn Tech", "Honestly Id wake up later but my mom would have my ass"
-		};
-		dialogueTexts.Add (dialogue5); // goes to 4
-		string[] dialogue6 = {"Agreeeeed", 
-			"If I could sleep until 11 each morning..", "Man that would be the life", 
-			"My mom would have my ass though"
-		};
-		dialogueTexts.Add (dialogue6);
-		string[] dialogue7 = {"Awww thats sweet of you", 
-			"Glad youre the first person I met going to this school", 
-			"I hear most of the people are creeps"};
-		dialogueTexts.Add (dialogue7);
-		string[] options0 = {"Hey nice to meet you", "What an odd name", 
-			"Wow youre stunning", "Fuck off"
-		};
-		optionsTexts.Add (options0);
-		string[] options1 = {"I tend to be on time", "Every day I sleep in is a success", 
-			"Ill wake up to make sure you have some company"
-		};
-		optionsTexts.Add (options1);
-		string[] options2 = { "Wow.. yeah thats pretty odd", "I WISH my name was &, what a badass moniker" };
-		optionsTexts.Add (options2);
-		string[] options3 = {"I dont suppose a fine specimen like you happens to be on her way to my high school as well?", 
-			"I say it like it is sweet stuff", "Yeah sorry about that you kinda caught me off guard"
-		};
-		optionsTexts.Add (options3);
-		string[] options4 = { "Template" };
-		optionsTexts.Add (options4);
-		string[] options5 = { "Problems at home?", "Yeah moms can be annoying like that" };
-		optionsTexts.Add (options5);
-		string[] options6 = { "Template" };
-		optionsTexts.Add (options6);
-		string[] options7 = { "Template" };
-		optionsTexts.Add (options7);
-		string[] options8 = { "Template" };
-		optionsTexts.Add (options8);
-		string[] options9 = { "Template" };
-		optionsTexts.Add (options9);
-		string[] options10 = { "Template" };
-		optionsTexts.Add (options10);
-		string[] options11 = { "Template" };
-		optionsTexts.Add (options11);
+	public void Restart()
+	{
+		Application.LoadLevel("Menu");
 	}
 
-    public void Restart()
-    {
-        Application.LoadLevel("Menu");
-    }
+	public void InitializeText() {
+		string[] template = { "Template" }; 
+		for (int i = 0; i < 2000; i++) {
+			dialogueTexts.Add (template); 
+			optionsTexts.Add (template);
+		}
+
+		// Scene 1: 0-100
+
+		string[] dialogue0 = { "Oh hey didnt see you there", "My name is Q" };
+		dialogueTexts[0] = dialogue0;
+		string[] dialogue1 = {"You go to Brooklyn Tech right?", 
+			"Seems like we'll be sharing this commute by train together quite often",
+			"Assuming you regularly wake up on time that is"
+		};
+		dialogueTexts[1] = dialogue1;
+		string[] dialogue2 = {"Yeah my parents are pretty strange", 
+			"Better than being stuck with my brother &'s name though"
+		};
+		dialogueTexts[2] = dialogue2;
+		string[] dialogue3 = {"Well thank you", 
+			"Kinda creepy that you'd say that to a complete stranger", 
+			"But it does wonders to my self esteem"
+		};
+		dialogueTexts[3] = dialogue3;
+		string[] dialogue4 = {"Ooooookaaay.. I'll catch you around I guess", "* Several weeks pass *",
+			"* Each day you ride the train with Q *", 
+			"* Each day you shoot down their attempts to socialize *", 
+			"* You attend classes but remain distant with your peers *",
+            "* Still, for some reason Q seems to have taken an interest in you *"
+		};
+		dialogueTexts[4] = dialogue4;
+		string[] dialogue5 = {"Studious then huh?", "Well I guess that makes sense", 
+			"You are going to Brooklyn Tech", "Honestly I'd wake up later but my mom would have my ass"
+		};
+		dialogueTexts[5] = dialogue5;
+		string[] dialogue6 = {"Agreeeeed", 
+			"If I could sleep until 11 each morning..", "Man that'd be the life", 
+			"My mom would have my ass though"
+		};
+		dialogueTexts[6] = dialogue6;// goes to 5
+		string[] dialogue7 = {"Awww that's sweet of you", 
+			"Glad you're the first person I met going to this school", 
+			"I hear most of the people are creeps"};
+		dialogueTexts[7] = dialogue7;
+		string[] options0 = {"Hey nice to meet you", "What an odd name", 
+			"Wow you're stunning", "Fuck off"
+		};
+		optionsTexts[0] = options0;
+		string[] options1 = {"I tend to be on time", "Every day I sleep in is a success", 
+			"I'll wake up to make sure you have some company"
+		};
+		optionsTexts[1] = options1;
+		string[] options2 = { "Wow.. yeah that's pretty odd", "I WISH my name was &, what a badass moniker" };
+		optionsTexts[2] = options2;
+		string[] options3 = {"I don't suppose a fine specimen like you happens to be on her way to my high school as well?", 
+			"I say it like it is sweet stuff", "Yeah sorry about that you kinda caught me off guard"
+		};
+		optionsTexts[3] = options3;
+		string[] options5 = { "Problems at home?", "Yeah moms can be annoying like that" };
+		optionsTexts[5] = options5;
+		string[] options7 = { "Who says I'm not?", "So what kind of things are you into?", "God I'm tired right now..." };
+		optionsTexts[7] = options7;
+	}
 }
 
