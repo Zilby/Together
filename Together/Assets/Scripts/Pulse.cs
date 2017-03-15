@@ -30,7 +30,7 @@ public class Pulse : MonoBehaviour {
             {
                 // rotates beat randomly if first appearance
                 Vector3 temp = GetComponent<Transform>().localEulerAngles;
-                temp.z = Random.Range(0, 360);
+				temp.z = (temp.z + 45 + Random.Range(0, 270)) % 360;
                 GetComponent<Transform>().localEulerAngles = temp;
                 blacked = false;
             }

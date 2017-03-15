@@ -39,7 +39,7 @@ public class KeyButton : MonoBehaviour {
 	}
 
 	void Up() {
-		StartColorTween(button.colors.normalColor, false);
+		//StartColorTween(button.colors.normalColor, false);
 	}
 
 	void Down() {
@@ -47,7 +47,7 @@ public class KeyButton : MonoBehaviour {
 		button.onClick.Invoke();
 	}
 
-	void StartColorTween(Color targetColor, bool instant) {
+	public void StartColorTween(Color targetColor, bool instant) {
 		if (targetGraphic == null)
 			return;
 

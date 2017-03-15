@@ -7,12 +7,14 @@ public class Beat : MonoBehaviour {
     public float frequency; //stress
     public float frozen; //compassion
 	public float love;
-    public float cracks;
+    public int cracks;
     public List<GameObject> cracklist;
     public GameObject blood;
-    private float timer;
-    private bool beating;
-    private bool dying;
+    private float timer; // timer for the heart beating
+    private bool beating; // ie: if the heart is large
+    private bool dying; // for bleeding death sequence
+	private float deathTime; // for death-crack sequence
+	private int deathSequenceCount; 
     private AudioSource beat;
     private int stressTimer; // cracks you if you're at too high a stress for too long
 
@@ -24,30 +26,36 @@ public class Beat : MonoBehaviour {
         stressTimer = 0;
         beating = false;
         dying = false;
+		deathTime = -1f;
+		deathSequenceCount = 0;
         InvokeRepeating("Stressed", 2.0f, 1.0f);
         SetPitch();
         SetColor();
+		//startDeathSequence (); 
     }
 
     void FixedUpdate () {
-        /*// For testing death
-        if(Time.time == 1)
-        {
-            Crack(1);
-        }
-        if (Time.time == 3)
-        {
-            Crack(2);
-        }
-        if (Time.time == 5)
-        {
-            Crack(3);
-        }
-        if (Time.time == 7)
-        {
-            Crack(4);
-        }
-        */ 
+		if (love < 0) {
+			love = 0;
+		}
+		if (frozen < 0) {
+			frozen = 0;
+		}
+		if (frequency < 0) {
+			frequency = 0;
+		}
+		if (love > 100) {
+			love = 100;
+		}
+		if (frozen > 100) {
+			frozen = 100;
+		}
+		if (frequency > 100) {
+			frequency = 100;
+		}
+		if (deathTime != -1f) {
+			DeathSequence ();
+		}
         if (dying)
         {
             StartCoroutine(HandleIt());
@@ -114,10 +122,11 @@ public class Beat : MonoBehaviour {
 
     public void SetColor()
     {
-        Color temp = GetComponent<SpriteRenderer>().color;
-        temp.b += frozen;
-        temp.r -= frozen / 100;
-        GetComponent<SpriteRenderer>().material.color = temp;
+		Color temp = GetComponent<SpriteRenderer>().color;
+		temp.b = frozen / 20f + 1f;
+		temp.r = (255f - (frozen * (255f / 100f))) / 255f;
+		temp.g = (255f - frozen) / 255f;
+		GetComponent<SpriteRenderer>().material.color = temp;
     }
 
     public void SetPitch()
@@ -136,7 +145,7 @@ public class Beat : MonoBehaviour {
         {
             dying = true;
         }
-        iTween.ShakePosition(gameObject, new Vector3(1f, 1f, 0f), 0.5f);
+        iTween.ShakePosition(gameObject, new Vector3(1f, 1f, 0f), 0.4f);
     }
 
     public void Die()
@@ -173,4 +182,34 @@ public class Beat : MonoBehaviour {
             stressTimer = 0;
         }
     }
+
+
+	private void DeathSequence() {
+		if (Time.time - deathTime >= 1f && deathSequenceCount == 0)
+		{
+			Crack(cracks + 1);
+			deathSequenceCount++;
+			deathTime = Time.time;
+		} else if (Time.time - deathTime >= 0.8f && deathSequenceCount == 1)
+		{
+			Crack(cracks + 1);
+			deathSequenceCount++;
+			deathTime = Time.time;
+		} else if (Time.time - deathTime >= 0.65f && deathSequenceCount == 2)
+		{
+			Crack(cracks + 1);
+			deathSequenceCount++;
+			deathTime = Time.time;
+		} else if (Time.time - deathTime >= 0.5f && deathSequenceCount == 3)
+		{
+			Crack(cracks + 1);
+			deathSequenceCount++;
+			deathTime = Time.time;
+		}
+	}
+
+
+	private void startDeathSequence() {
+		deathTime = Time.time; 
+	}
 }
