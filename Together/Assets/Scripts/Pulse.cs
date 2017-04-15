@@ -46,6 +46,10 @@ public class Pulse : MonoBehaviour {
         }
 	}
 
+	public void Update() {
+		transform.position = heart.transform.position;
+	}
+
     private void setToHeartColor()
     {
         Color c = background.color;

@@ -17,6 +17,8 @@ public class Beat : MonoBehaviour {
 	private int deathSequenceCount; 
     private AudioSource beat;
     private int stressTimer; // cracks you if you're at too high a stress for too long
+	private bool moveRight;
+	private bool moveLeft;
 
     private void Start()
     {
@@ -56,7 +58,7 @@ public class Beat : MonoBehaviour {
 		if (deathTime != -1f) {
 			DeathSequence ();
 		}
-        if (dying)
+		if (dying || frozen == 100)
         {
             StartCoroutine(HandleIt());
             Color c = GetComponent<SpriteRenderer>().material.color;
@@ -66,6 +68,10 @@ public class Beat : MonoBehaviour {
         }
         else
         {
+			float x = Input.GetAxis ("Horizontal");
+			if (x != 0.0f && !(x > 0.0f && transform.position.x > 7.0f) && !(x < 0.0f && transform.position.x < -7.0f)) {
+				transform.position = new Vector3 (transform.position.x + x / 3.0f, transform.position.y, transform.position.z);
+			}
             SetPitch();
             SetColor();
             if (timer == 0)
@@ -105,6 +111,10 @@ public class Beat : MonoBehaviour {
 
         }
     }
+
+	public void Update() {
+		
+	}
 
 	public void ScaleLove() {
 		GetComponent<Transform> ().localScale = (GetComponent<Transform>().localScale/2.2f)*((love/50f) + 1);

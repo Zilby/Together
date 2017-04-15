@@ -33,6 +33,10 @@ public class GameController : MonoBehaviour {
 	private List<string[]> optionsTexts = new List<string[]>();
 	private List<string[]> dialogueTexts = new List<string[]>();
 
+	public List<GameObject> texts; 
+	private int counter;
+	private int index;
+
 	public void Start() {
 		over = false;
 		slightRedirect = false;
@@ -47,12 +51,14 @@ public class GameController : MonoBehaviour {
 		option3 = true;
 		h = heart.GetComponent<Beat>();
         gameover.SetActive(false);
-		InitializeText();
-		TransitionToTalk ();
+		//InitializeText();
+		//TransitionToTalk ();
+
+		index = 0; 
+		counter = 150; 
 	}
 
 	public void FixedUpdate() {
-		print (location);
         if(h.cracks == 4)
         {
             foreach (Button b in options)
@@ -88,8 +94,21 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		selected = false;
+		if (counter <= 0 && index < texts.Count) {
+			texts [index].SetActive (true);
+			counter = 200;
+			index++;
+		} else {
+			counter--;
+		}
 	}
 
+	public void Restart()
+	{
+		Application.LoadLevel("Menu");
+	}
+
+	/*
 	public void Talk() {
 		if (typing) {
 			skip = true;
@@ -137,6 +156,7 @@ public class GameController : MonoBehaviour {
 			ExecuteOption ();
 		}
 	}
+
 
 	public void OptionOne() {
 		DeselectOptions (0);
@@ -369,11 +389,6 @@ public class GameController : MonoBehaviour {
 		//dialogue.GetComponent<Text> ().text = dialogueTexts [location] [curr];
 		curr++;
  	}
-
-	public void Restart()
-	{
-		Application.LoadLevel("Menu");
-	}
 
 	IEnumerator TypeText (string message) {
 		typing = true;
@@ -646,5 +661,6 @@ public class GameController : MonoBehaviour {
 		string[] dialogue100 = { "Scene 2" };
 		dialogueTexts[100] = dialogue100;
 	}
+	*/
 }
 
