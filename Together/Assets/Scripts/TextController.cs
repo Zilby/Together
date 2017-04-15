@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TextController : MonoBehaviour {
 
-	public Beat heart; 
+	public Beat heart;
 	public int love;
 	public int frozen;
 	public int frequency;
@@ -23,7 +23,7 @@ public class TextController : MonoBehaviour {
 	void FixedUpdate () {
 		transform.position = Vector3.MoveTowards (transform.position, 
 			new Vector3 (transform.position.x, -10f, transform.position.z), 
-			2.0f * Time.deltaTime);
+			(2.0f * GameController.speed) * Time.deltaTime);
 		if (transform.position.y < -6.5) {
 			heart.love += love2;
 			heart.frozen += frozen2;

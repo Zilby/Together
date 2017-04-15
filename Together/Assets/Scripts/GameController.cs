@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -13,63 +14,116 @@ public class GameController : MonoBehaviour {
 	public GameObject gameover;
 	public bool over;
 	public bool selected;
-	public List<Button> options; 
+	//public List<Button> options; 
 	public Button dialogue; 
-	public AudioSource song1;
+	//public AudioSource song1;
 	private bool narrating;
-	private bool slightRedirect; // for if on a tangent but related path
-	private int response; // for responding to a specific choice but going to main path
+	//private bool slightRedirect; // for if on a tangent but related path
+	//private int response; // for responding to a specific choice but going to main path
 						  // set the response to the location you want it to go to after
-	private int response2; // for responding to a specific choice but going to main path
+	//private int response2; // for responding to a specific choice but going to main path
 	// set the response to the location you want it to go to after
 	private int location;
-	private int curr;
+	//private int curr;
 	private float letterPause; // amount of time before another letter is typed
 	private bool typing; // whether the current dialogue is being typed
 	private bool skip; // true if you want to skip the text delay
-	private bool option1; // for exhausting an option from a selection
-	private bool option2; 
-	private bool option3; 
-	private List<string[]> optionsTexts = new List<string[]>();
-	private List<string[]> dialogueTexts = new List<string[]>();
+	//private bool option1; // for exhausting an option from a selection
+	//private bool option2; 
+	//private bool option3; 
+	//private List<string[]> optionsTexts = new List<string[]>();
+	//private List<string[]> dialogueTexts = new List<string[]>();
+    private List<string> dialogueTexts = new List<string>();
+
+    private bool cracking;
+    public static float speed; // speed/frequency of the falling text 
 
 	public List<GameObject> texts; 
-	private int counter;
+	private float counter;
 	private int index;
+    public static bool ending;
 
 	public void Start() {
 		over = false;
-		slightRedirect = false;
-		response = -1;
-		response2 = -1; 
+		//slightRedirect = false;
+		//response = -1;
+		//response2 = -1; 
 		location = 0;
 		letterPause = 0.005f;
 		typing = false;
 		skip = false;
-		option1 = true;
-		option2 = true;
-		option3 = true;
+		//option1 = true;
+		//option2 = true;
+		//option3 = true;
 		h = heart.GetComponent<Beat>();
         gameover.SetActive(false);
-		//InitializeText();
-		//TransitionToTalk ();
+        ending = false;
+        //InitializeText();
+        //TransitionToTalk ();
+
+        speed = 1;
+        cracking = false;
 
 		index = 0; 
-		counter = 150; 
-	}
+		counter = 150;
+        string template = "";  // "template"
+        for (int i = 0; i < 2000; i++)
+        {
+            dialogueTexts.Add(template);
+        }
+        string dialogue0 = "They love you";
+        dialogueTexts[0] = dialogue0;
+        string dialogue1 = "But over time feelings change";
+        dialogueTexts[1] = dialogue1;
+        string dialogue2 = "Love is fleeting and the past, only memories";
+        dialogueTexts[2] = dialogue2;
+        string dialogue3 = "Even though you still feel the same love towards them";
+        dialogueTexts[3] = dialogue3;
+        string dialogue4 = "They will never feel the same way about you"; 
+        dialogueTexts[4] = dialogue4;
+        string dialogue5 = "They break up with you";  // crack love - 25
+        dialogueTexts[5] = dialogue5;
+        string dialogue6 = ". . .";
+        dialogueTexts[6] = dialogue6;
+        string dialogue7 = "You feel lost";
+        dialogueTexts[7] = dialogue7;
+        string dialogue8 = "They were your whole world";
+        dialogueTexts[8] = dialogue8;
+        string dialogue9 = "What made you get up in the morning"; // crack love - 25
+        dialogueTexts[9] = dialogue9;
+        string dialogue10 = "What brought you joy during hard times"; // crack love - 25
+        dialogueTexts[10] = dialogue10;
+        string dialogue11 = "What gave your life purpose"; 
+        dialogueTexts[11] = dialogue11;
+        string dialogue12 = ". . .";
+        dialogueTexts[12] = dialogue12;
+        string dialogue13 = "You can't live like this";
+        dialogueTexts[13] = dialogue13;
+        string dialogue14 = "Without something to live for";
+        dialogueTexts[14] = dialogue14;
+        string dialogue15 = "You consider ending it all"; 
+        dialogueTexts[15] = dialogue15;
+        string dialogue16 = ". . ."; // final crack
+        dialogueTexts[16] = dialogue16;
+        string dialogue17 = "But you don't";
+        dialogueTexts[17] = dialogue17;
+        string dialogue18 = "Because even if you'll never get back together";
+        dialogueTexts[18] = dialogue18;
+        string dialogue19 = "Maybe someday you'll be able to feel the same love again";
+        dialogueTexts[19] = dialogue19;
+    }
 
 	public void FixedUpdate() {
-        if(h.cracks == 4)
-        {
-            foreach (Button b in options)
-            {
-                b.GetComponent<Text>().text = "";
-            }
-            dialogue.GetComponent<Text>().text = "";
-        }
 		if(over) {
 
         } else if (heart == null) {
+            foreach(GameObject obj in texts)
+            {
+                if(obj)
+                {
+                    obj.SetActive(false);
+                }
+            }
 			stress.text = "";
 			compassion.text = "";
 			love.text = "";
@@ -79,36 +133,130 @@ public class GameController : MonoBehaviour {
 			gameover.GetComponent<Button>().GetComponent<Text>().text = messages [Random.Range (0, 7)];
 			over = true;
 		} else {
-			stress.text = "Stress: " + (100 - h.frequency);
+            if(ending)
+            {
+                if(location == 20)
+                {
+                    StartCoroutine(End());
+                }
+            }
+            else
+            {
+                if (counter <= 0 && index < texts.Count)
+                {
+                    texts[index].SetActive(true);
+                    counter = 200 / speed;
+                    index++;
+                    if (index % 5 == 0)
+                    {
+                        speed += 0.1f;
+                    }
+                }
+                else if (index == texts.Count && !texts[texts.Count - 1])
+                {
+                    ending = true;
+                    h.end = true;
+                    dialogue.gameObject.SetActive(true);
+                    Talk();
+                }
+                else
+                {
+                    counter--;
+                }
+            }
+            stress.text = "Stress: " + (100 - h.frequency);
 			compassion.text = "Compassion: " + (100 - h.frozen);
 			love.text = "Love: " + (h.love);
-			foreach (Button b in options) {
-				ColorBlock cb = b.colors;
-				Color temp = cb.pressedColor;
-				temp.b = (100f + (h.frozen * (155f/100f))) / 255f;
-				temp.r = (255f - (h.frozen * (155f/100f))) / 255f;
-				//temp.b = h.frozen * (255/100);
-				//temp.r = 255 - (h.frozen * (255/100));
-				cb.pressedColor = temp;
-				b.colors = cb;
-			}
 		}
-		selected = false;
-		if (counter <= 0 && index < texts.Count) {
-			texts [index].SetActive (true);
-			counter = 200;
-			index++;
-		} else {
-			counter--;
-		}
+        
 	}
 
 	public void Restart()
 	{
-		Application.LoadLevel("Menu");
+		SceneManager.LoadScene("Menu");
 	}
 
-	/*
+    IEnumerator TypeText(string message)
+    {
+        if (!cracking)
+        {
+            typing = true;
+            string current = "";
+            dialogue.GetComponent<Text>().text = "";
+            char[] m = message.ToCharArray();
+            for (int i = 0; i < message.Length; i++)
+            {
+                if (skip)
+                {
+                    dialogue.GetComponent<Text>().text = message;
+                    skip = false;
+                    break;
+                }
+                current += m[i];
+                dialogue.GetComponent<Text>().text = current;
+                dialogue.GetComponent<Text>().text += "<color=#00000000>";
+                for (int j = i + 1; j < message.Length; j++)
+                {
+                    dialogue.GetComponent<Text>().text += m[j];
+                }
+                dialogue.GetComponent<Text>().text += "</color>";
+                yield return new WaitForSeconds(letterPause);
+            }
+            typing = false;
+        }
+    }
+
+    public void Talk()
+    {
+        if (typing)
+        {
+            skip = true;
+        }
+        else if ((location == 6 || location == 10 || location == 11 || location == 17) && h.love > 0 && !cracking)
+        {
+            cracking = true;
+            StartCoroutine(Crack());
+        }
+        else if (!cracking)
+        {
+            StartCoroutine(TypeText(dialogueTexts[location]));
+            location++;
+        }
+        if (location == 18)
+        {
+            h.frequency = 80;
+        }
+    }
+
+    public IEnumerator Crack()
+    {
+        string temp = dialogue.GetComponent<Text>().text;
+        dialogue.GetComponent<Text>().text = "";
+        yield return new WaitForSeconds(0.5f);
+        h.love -= 25;
+        h.frequency -= 10;
+        if (h.frequency < 10)
+        {
+            h.frequency = 10;
+        }
+        h.Crack((int)h.cracks + 1);
+        if(h.cracks == 4)
+        {
+            dialogue.gameObject.SetActive(false);
+        }
+        yield return new WaitForSeconds(1f);
+        cracking = false;
+        StartCoroutine(TypeText(dialogueTexts[location]));
+        location++;
+    }
+
+    public IEnumerator End()
+    {
+        location++;
+        yield return new WaitForSeconds(6.0f);
+        SceneManager.LoadScene("Menu");
+    }
+    /*
 	public void Talk() {
 		if (typing) {
 			skip = true;
@@ -390,31 +538,7 @@ public class GameController : MonoBehaviour {
 		curr++;
  	}
 
-	IEnumerator TypeText (string message) {
-		typing = true;
-		string current = "";
-		dialogue.GetComponent<Text> ().text = "";
-		char[] m = message.ToCharArray ();
-		for (int i = 0; i < message.Length; i++) {
-			if (skip) {
-				dialogue.GetComponent<Text> ().text = message;
-				skip = false;
-				break;
-			}
-			current += m[i];
-			dialogue.GetComponent<Text> ().text = current;
-			dialogue.GetComponent<Text> ().text += "<color=#00000000>";
-			for(int j = i + 1; j < message.Length; j++) {
-				dialogue.GetComponent<Text> ().text += m[j];
-			}
-			dialogue.GetComponent<Text> ().text += "</color>";
-			//if (sound)
-			//	audio.PlayOneShot (sound);
-			//	yield return 0;
-			yield return new WaitForSeconds (letterPause);
-		}     
-		typing = false;
-	}
+	
 
 	public void DeselectOptions(int op) {
 		int i = 0;

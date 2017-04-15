@@ -10,6 +10,7 @@ public class Beat : MonoBehaviour {
     public int cracks;
     public List<GameObject> cracklist;
     public GameObject blood;
+    public bool end;
     private float timer; // timer for the heart beating
     private bool beating; // ie: if the heart is large
     private bool dying; // for bleeding death sequence
@@ -33,6 +34,7 @@ public class Beat : MonoBehaviour {
         InvokeRepeating("Stressed", 2.0f, 1.0f);
         SetPitch();
         SetColor();
+        end = false;
 		//startDeathSequence (); 
     }
 
@@ -58,13 +60,16 @@ public class Beat : MonoBehaviour {
 		if (deathTime != -1f) {
 			DeathSequence ();
 		}
-		if (dying || frozen == 100)
+		if (dying)
         {
             StartCoroutine(HandleIt());
             Color c = GetComponent<SpriteRenderer>().material.color;
             // fades color over time
             c.a -= 0.02f;
             GetComponent<SpriteRenderer>().material.color = c;
+        } else if (frozen == 100 && deathTime == -1f)
+        {
+            startDeathSequence();
         }
         else
         {
@@ -178,18 +183,21 @@ public class Beat : MonoBehaviour {
 
     private void Stressed()
     {
-        if (frequency <= 20)
+        if (!end)
         {
-            stressTimer += 20 / (int)frequency;
-        }
-        else
-        {
-            stressTimer = 0;
-        }
-        if (stressTimer >= 20)
-        {
-            Crack((int)cracks + 1);
-            stressTimer = 0;
+            if (frequency <= 20)
+            {
+                stressTimer += 20 / (int)frequency;
+            }
+            else
+            {
+                stressTimer = 0;
+            }
+            if (stressTimer >= 20)
+            {
+                Crack((int)cracks + 1);
+                stressTimer = 0;
+            }
         }
     }
 
@@ -197,22 +205,22 @@ public class Beat : MonoBehaviour {
 	private void DeathSequence() {
 		if (Time.time - deathTime >= 1f && deathSequenceCount == 0)
 		{
-			Crack(cracks + 1);
+            Crack(cracks + 1);
 			deathSequenceCount++;
 			deathTime = Time.time;
 		} else if (Time.time - deathTime >= 0.8f && deathSequenceCount == 1)
 		{
-			Crack(cracks + 1);
+            Crack(cracks + 1);
 			deathSequenceCount++;
 			deathTime = Time.time;
 		} else if (Time.time - deathTime >= 0.65f && deathSequenceCount == 2)
 		{
-			Crack(cracks + 1);
+            Crack(cracks + 1);
 			deathSequenceCount++;
 			deathTime = Time.time;
 		} else if (Time.time - deathTime >= 0.5f && deathSequenceCount == 3)
 		{
-			Crack(cracks + 1);
+            Crack(cracks + 1);
 			deathSequenceCount++;
 			deathTime = Time.time;
 		}
