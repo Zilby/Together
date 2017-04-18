@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour {
 	public Text stress;
 	public Text compassion;
 	public Text love;
+	public Text arrows;
 	public GameObject gameover;
 	public bool over;
 	public bool selected;
@@ -36,6 +37,8 @@ public class GameController : MonoBehaviour {
     private List<string> dialogueTexts = new List<string>();
 
     private bool cracking;
+	private bool fadeIn;
+	private bool fadeOut;
     public static float speed; // speed/frequency of the falling text 
 
 	public List<GameObject> texts; 
@@ -63,6 +66,7 @@ public class GameController : MonoBehaviour {
 
         speed = 1;
         cracking = false;
+		StartCoroutine (Arrows ());
 
 		index = 0; 
 		counter = 150;
@@ -113,6 +117,24 @@ public class GameController : MonoBehaviour {
         dialogueTexts[19] = dialogue19;
     }
 
+	void Update() {
+		if (Input.GetKey ("escape")) {
+			Application.Quit ();
+		}
+		if (fadeIn) {
+			arrows.color = Color.Lerp (arrows.color, new Color (1, 1, 1, 1), 1.2f * Time.deltaTime);
+			if (arrows.color.a > 0.95) {
+				fadeIn = false;
+				fadeOut = true;
+			}
+		} else if (fadeOut) {
+			arrows.color = Color.Lerp (arrows.color, new Color (1, 1, 1, 0), 1.5f * Time.deltaTime);
+			if (arrows.color.a < 0.01) {
+				fadeOut = false;
+			}
+		}
+	}
+
 	public void FixedUpdate() {
 		if(over) {
 
@@ -140,7 +162,7 @@ public class GameController : MonoBehaviour {
                     StartCoroutine(End());
                 }
             }
-            else
+			else
             {
                 if (counter <= 0 && index < texts.Count)
                 {
@@ -149,7 +171,7 @@ public class GameController : MonoBehaviour {
                     index++;
                     if (index % 5 == 0)
                     {
-                        speed += 0.05f;
+                        speed += 0.03f;
                     }
                 }
                 else if (index == texts.Count && !texts[texts.Count - 1])
@@ -256,6 +278,11 @@ public class GameController : MonoBehaviour {
         yield return new WaitForSeconds(6.0f);
         SceneManager.LoadScene("Menu");
     }
+
+	public IEnumerator Arrows() {
+		yield return new WaitForSeconds (0.5f);
+		fadeIn = true;
+	}
     /*
 	public void Talk() {
 		if (typing) {

@@ -20,6 +20,9 @@ public class ChangeScene : MonoBehaviour {
 	}
 
 	void Update() {
+		if (Input.GetKey ("escape")) {
+			Application.Quit ();
+		}
 		if (name) {
 			n.color = Color.Lerp (n.color, new Color (1, 1, 1, 1), 1.2f * Time.deltaTime);
 			if (n.color.a > 0.95) {

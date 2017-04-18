@@ -20,6 +20,7 @@ public class Beat : MonoBehaviour {
     private int stressTimer; // cracks you if you're at too high a stress for too long
 	private bool moveRight;
 	private bool moveLeft;
+	private float actualFrequency;
 
     private void Start()
     {
@@ -60,6 +61,10 @@ public class Beat : MonoBehaviour {
 		if (deathTime != -1f) {
 			DeathSequence ();
 		}
+		actualFrequency = frequency; 
+		if (actualFrequency < 10) {
+			actualFrequency = 10;
+		}
 		if (dying)
         {
             StartCoroutine(HandleIt());
@@ -83,31 +88,31 @@ public class Beat : MonoBehaviour {
             {
                 beat.Stop();
                 beat.Play();
-                timer = frequency;
+				timer = Mathf.Max(actualFrequency, 10);
             }
             else
             {
                 timer--;
             }
-            if (timer == (int)frequency * 9 / 10)
+			if (timer == (int)actualFrequency * 9 / 10)
             {
                 GetComponent<Transform>().localScale = new Vector3(1f, 1f, 0);
 				ScaleLove ();
                 beating = true;
             }
-            if (timer == (int)frequency * 8 / 10)
+			if (timer == (int)actualFrequency * 8 / 10)
             {
                 GetComponent<Transform>().localScale = new Vector3(0.8f, 0.8f, 0);
 				ScaleLove ();
                 beating = false;
             }
-            if (timer == (int)frequency * 7 / 10)
+			if (timer == (int)actualFrequency * 7 / 10)
             {
                 GetComponent<Transform>().localScale = new Vector3(1f, 1f, 0);
 				ScaleLove ();
                 beating = true;
             }
-            if (timer == (int)frequency * 5 / 10)
+			if (timer == (int)actualFrequency * 5 / 10)
             {
                 GetComponent<Transform>().localScale = new Vector3(0.8f, 0.8f, 0);
 				ScaleLove ();
@@ -146,7 +151,7 @@ public class Beat : MonoBehaviour {
 
     public void SetPitch()
     {
-        beat.pitch = 1 + (50 - frequency) / 150;
+		beat.pitch = 1 + (50 - actualFrequency) / 150;
     }
 
     public void Crack(int i)
@@ -187,7 +192,7 @@ public class Beat : MonoBehaviour {
         {
             if (frequency <= 20)
             {
-                stressTimer += 20 / (int)frequency;
+				stressTimer += 20 / Mathf.Max((int)frequency, 1);
             }
             else
             {
