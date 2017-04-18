@@ -149,7 +149,7 @@ public class GameController : MonoBehaviour {
                     index++;
                     if (index % 5 == 0)
                     {
-                        speed += 0.1f;
+                        speed += 0.05f;
                     }
                 }
                 else if (index == texts.Count && !texts[texts.Count - 1])
