@@ -13,6 +13,7 @@ public class ChangeScene : MonoBehaviour {
 	private bool transparent;
 
 	void Start() {
+		Cursor.visible = false;
 		wait = true; 
 		name = false;
 		transparent = true;
