@@ -40,6 +40,8 @@ public class GameController : MonoBehaviour {
 	private bool fadeIn;
 	private bool fadeOut;
     public static float speed; // speed/frequency of the falling text 
+	public Text space;
+	private bool pressSpace;
 
 	public List<GameObject> texts; 
 	private float counter;
@@ -63,10 +65,11 @@ public class GameController : MonoBehaviour {
         ending = false;
         //InitializeText();
         //TransitionToTalk ();
-
+		pressSpace = false;
         speed = 1;
         cracking = false;
 		StartCoroutine (Arrows ());
+
 
 		index = 0; 
 		counter = 150;
@@ -121,16 +124,31 @@ public class GameController : MonoBehaviour {
 		if (Input.GetKey ("escape")) {
 			Application.Quit ();
 		}
-		if (fadeIn) {
+		if (fadeIn && !pressSpace) {
 			arrows.color = Color.Lerp (arrows.color, new Color (1, 1, 1, 1), 1.2f * Time.deltaTime);
 			if (arrows.color.a > 0.95) {
 				fadeIn = false;
 				fadeOut = true;
 			}
-		} else if (fadeOut) {
+		} else if (fadeOut && !pressSpace) {
 			arrows.color = Color.Lerp (arrows.color, new Color (1, 1, 1, 0), 1.5f * Time.deltaTime);
 			if (arrows.color.a < 0.01) {
 				fadeOut = false;
+			}
+		}
+		if (pressSpace) {
+			if (fadeIn) {
+				space.color = Color.Lerp (space.color, new Color (1, 1, 1, 1), 1.2f * Time.deltaTime);
+				if (space.color.a > 0.95) {
+					fadeIn = false;
+					fadeOut = true;
+				}
+			} else if (fadeOut) {
+				space.color = Color.Lerp (space.color, new Color (1, 1, 1, 0), 1.5f * Time.deltaTime);
+				if (space.color.a < 0.01) {
+					fadeOut = false;
+					fadeIn = true;
+				}
 			}
 		}
 	}
@@ -236,12 +254,25 @@ public class GameController : MonoBehaviour {
         }
         else if ((location == 6 || location == 10 || location == 11 || location == 17) && h.love > 0 && !cracking)
         {
-            cracking = true;
-            StartCoroutine(Crack());
+			if (!(location == 17) || h.love > 10) {
+				cracking = true;
+				StartCoroutine (Crack ());
+			} else {
+				h.love = 0;
+			}
         }
         else if (!cracking)
         {
             StartCoroutine(TypeText(dialogueTexts[location]));
+			if (location == 0 && !space.enabled) {
+				space.enabled = true;
+				StartCoroutine (PressSpace ());
+			} else if (location == 1 && space.enabled) {
+				space.enabled = false;
+				pressSpace = false;
+				fadeIn = false;
+				fadeOut = false;
+			}
             location++;
         }
         if (location == 18)
@@ -281,6 +312,12 @@ public class GameController : MonoBehaviour {
 
 	public IEnumerator Arrows() {
 		yield return new WaitForSeconds (0.5f);
+		fadeIn = true;
+	}
+
+	private IEnumerator PressSpace() {
+		yield return new WaitForSeconds (4.0f);
+		pressSpace = true;
 		fadeIn = true;
 	}
     /*

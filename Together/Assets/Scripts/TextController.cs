@@ -15,7 +15,7 @@ public class TextController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		float x = Random.Range (-6f, 6f);
+		float x = Random.Range (-5f, 5f);
 		transform.position = new Vector3 (x, transform.position.y, transform.position.z);
 	}
 	
