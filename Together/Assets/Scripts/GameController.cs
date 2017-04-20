@@ -134,6 +134,7 @@ public class GameController : MonoBehaviour {
 			arrows.color = Color.Lerp (arrows.color, new Color (1, 1, 1, 0), 1.5f * Time.deltaTime);
 			if (arrows.color.a < 0.01) {
 				fadeOut = false;
+                arrows.enabled = false;
 			}
 		}
 		if (pressSpace) {
