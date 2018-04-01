@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio for Mac
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Together.Plugins", "Together.Plugins.csproj", "{B25EF9CC-900C-DD8C-7C12-100E017E46FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Together", "Together.csproj", "{5003DE52-8349-5ACB-9780-51C04E3FCF76}"
