@@ -99,6 +99,9 @@
     <Reference Include="UnityEngine.VR">
       <HintPath>/Applications/Unity5.3/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
     </Reference>
+    <Reference Include="Facepunch.Steamworks">
+      <HintPath>Assets/Plugins/Facepunch.Steamworks/Release/net35/Facepunch.Steamworks.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>/Applications/Unity5.3/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
     </Reference>
@@ -120,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Diagrams\Scene1.xml" />
+    <None Include="Assets\Plugins\Facepunch.Steamworks\Readme.txt" />
+    <None Include="Assets\Plugins\Facepunch.Steamworks\Release\net35\Facepunch.Steamworks.xml" />
+    <None Include="Assets\Plugins\Facepunch.Steamworks\Release\net40\Facepunch.Steamworks.xml" />
+    <None Include="Assets\Plugins\Facepunch.Steamworks\Release\net45\Facepunch.Steamworks.xml" />
+    <None Include="Assets\Plugins\Facepunch.Steamworks\Release\netstandard2.0\Facepunch.Steamworks.xml" />
+    <None Include="Assets\Plugins\Facepunch.Steamworks\Steam Libraries\Readme.txt" />
     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
