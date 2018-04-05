@@ -1,13 +1,10 @@
 ﻿<Properties StartupConfiguration="{5003DE52-8349-5ACB-9780-51C04E3FCF76}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/SteamTest.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/Pulse.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameController.cs" Line="147" Column="25" />
-      <File FileName="Assets/Scripts/ChangeScene.cs" Line="32" Column="4" />
-      <File FileName="Assets/Scripts/Beat.cs" Line="209" Column="2" />
-      <File FileName="Assets/Scripts/Pulse.cs" Line="30" Column="14" />
-      <File FileName="Assets/Scripts/TextController.cs" Line="18" Column="33" />
-      <File FileName="../../neuroplatform/Assets/Scripts/NeuroSport/CommonUI/EnvUI.cs" Line="7" Column="1" />
-      <File FileName="Assets/Scripts/SteamTest.cs" Line="9" Column="14" />
+      <File FileName="Assets/Scripts/Trailer/TrailerBeat.cs" Line="5" Column="30" />
+      <File FileName="Assets/Scripts/Game/Beat.cs" Line="5" Column="14" />
+      <File FileName="Assets/Scripts/Trailer/TrailerPulse.cs" Line="5" Column="30" />
+      <File FileName="Assets/Scripts/Game/Pulse.cs" Line="9" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
