@@ -39,11 +39,11 @@ public class Pulse : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
-        if(heart.GetDying())
+		if(heart.Dying)
         {
             Destroy(gameObject);
         }
-        if (heart.GetBeating())
+		if (heart.Beating)
         {
             // sets transparency to none for full duration of beat
             background.color = Color.white;
@@ -53,7 +53,7 @@ public class Pulse : MonoBehaviour {
                 // rotates beat randomly if first appearance
                 Vector3 temp = GetComponent<Transform>().localEulerAngles;
 				temp.z = (temp.z + 45 + Random.Range(0, 270)) % 360;
-                GetComponent<Transform>().localEulerAngles = temp;
+				transform.localEulerAngles = temp;
                 blacked = false;
             }
         } 
@@ -89,7 +89,7 @@ public class Pulse : MonoBehaviour {
 		SetToHeartColor();
 		Color c = background.color;
 		// fades color over time, faster depending on the frequency of the beat
-		c.a -= 0.02f + (((100 / heart.frequency) - 1) / 100);
+		c.a -= 0.02f + (((100 / heart.Frequency) - 1) / 100);
 		background.color = c;
 		blacked = true;
 	}

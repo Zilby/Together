@@ -16,14 +16,14 @@ public class TrailerBeat : Beat
 		for (;;)
 		{
 			yield return new WaitForSecondsRealtime(60f / 80f);
-			love += 1.2f;
-			frequency -= 1;
+			Love += 1.2f;
+			Frequency -= 1;
 		}
 	}
 
 	public override void ScaleLove()
 	{
-		GetComponent<Transform>().localScale = (GetComponent<Transform>().localScale / 2.2f) * ((love / 25f) + 1);
+		transform.localScale = (transform.localScale / 2.2f) * ((Love / 25f) + 1);
 	}
 }
 

@@ -50,14 +50,14 @@ public class TextController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (heart && !heart.GetDying ()) {
+		if (heart && !heart.Dying) {
 			transform.position = Vector3.MoveTowards (transform.position, 
 				new Vector3 (transform.position.x, -10f, transform.position.z), 
 				(2.0f * GameController.speed) * Time.deltaTime);
 			if (transform.position.y < -6.5) {
-				heart.love += love2;
-				heart.frozen += frozen2;
-				heart.frequency += frequency2;
+				heart.Love += love2;
+				heart.Frozen += frozen2;
+				heart.Frequency += frequency2;
 				Destroy (gameObject);
 			}
 		} else {
@@ -66,9 +66,9 @@ public class TextController : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter2D(Collider2D col) {
-		heart.love += love;
-		heart.frozen += frozen;
-		heart.frequency += frequency;
+		heart.Love += love;
+		heart.Frozen += frozen;
+		heart.Frequency += frequency;
 		Destroy (gameObject);
 	}
 

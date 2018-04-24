@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -26,7 +27,7 @@ public class ChangeScene : MonoBehaviour {
 	/// <summary>
 	/// False before the name text fades in. 
 	/// </summary>
-	private bool name;
+	private bool nameFadeIn;
 
 	/// <summary>
 	/// Whether or not the press space text is currently turning from transparent to opaque. 
@@ -36,7 +37,7 @@ public class ChangeScene : MonoBehaviour {
 	void Start() {
 		Cursor.visible = false;
 		wait = true; 
-		name = false;
+		nameFadeIn = false;
 		transparent = true;
 		StartCoroutine (Wait ());
 	}
@@ -45,10 +46,10 @@ public class ChangeScene : MonoBehaviour {
 		if (Input.GetKey ("escape")) {
 			Application.Quit ();
 		}
-		if (name) {
+		if (nameFadeIn) {
 			n.color = Color.Lerp (n.color, new Color (1, 1, 1, 1), 1.2f * Time.deltaTime);
 			if (n.color.a > 0.95) {
-				name = false;
+				nameFadeIn = false;
 			}
 		}
 		if (!wait) {
@@ -70,7 +71,7 @@ public class ChangeScene : MonoBehaviour {
 	/// Loads the main scene. 
 	/// </summary>
 	public void LoadScene() {
-		Application.LoadLevel ("Main");
+		SceneManager.LoadScene("Main");
 	}
 
 	/// <summary>
@@ -78,7 +79,7 @@ public class ChangeScene : MonoBehaviour {
 	/// </summary>
 	private IEnumerator Wait() {
 		yield return new WaitForSeconds (2.0f);
-		name = true;
+		nameFadeIn = true;
 		yield return new WaitForSeconds (3.0f);
 		wait = false;
 	}
