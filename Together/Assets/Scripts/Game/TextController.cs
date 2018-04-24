@@ -2,15 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls an individual falling text object and its impact on individual stats. 
+/// </summary>
 public class TextController : MonoBehaviour {
 
+	/// <summary>
+	/// The player heart.
+	/// </summary>
 	public Beat heart;
+
+	/// <summary>
+	/// How much love the player gains upon collecting this text. 
+	/// </summary>
 	public int love;
+
+	/// <summary>
+	/// How much more frozen the player's heart becomes upon collecting this text. 
+	/// </summary>
 	public int frozen;
+
+	/// <summary>
+	/// How much more stressed the player is upon collecting this text. 
+	/// </summary>
 	public int frequency;
 
+	/// <summary>
+	/// How much love the player gains if they don't collect this text. 
+	/// </summary>
 	public int love2;
+
+	/// <summary>
+	/// How much more frozen the player's heart becomes if they don't collect this text. 
+	/// </summary>
 	public int frozen2;
+
+	/// <summary>
+	/// How much more stressed the player is if they don't collect this text. 
+	/// </summary>
 	public int frequency2;
 
 	// Use this for initialization

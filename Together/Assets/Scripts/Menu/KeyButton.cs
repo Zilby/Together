@@ -4,6 +4,9 @@ using UnityEngine.UI;
 // Credits to Huacanacha for this code
 // Written by him
 
+/// <summary>
+/// Used for allowing buttons to be activated by key clicks. 
+/// </summary>
 [RequireComponent(typeof(Button))]
 public class KeyButton : MonoBehaviour {
 

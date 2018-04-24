@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls the player heart and its beating. 
+/// </summary>
 public class Beat : MonoBehaviour {
 
     public float frequency; //stress

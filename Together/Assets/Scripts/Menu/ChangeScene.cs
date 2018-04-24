@@ -3,13 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Changes the scene from the menu. 
+/// </summary>
 public class ChangeScene : MonoBehaviour {
 
+	/// <summary>
+	/// Text that says press space.
+	/// </summary>
 	public Text t; 
+
+	/// <summary>
+	/// Developer name text. 
+	/// </summary>
 	public Text n;
 
+	/// <summary>
+	/// False before the press space text fades in and out. 
+	/// </summary>
 	private bool wait;
+
+	/// <summary>
+	/// False before the name text fades in. 
+	/// </summary>
 	private bool name;
+
+	/// <summary>
+	/// Whether or not the press space text is currently turning from transparent to opaque. 
+	/// </summary>
 	private bool transparent;
 
 	void Start() {
@@ -45,10 +66,16 @@ public class ChangeScene : MonoBehaviour {
 		}
 	}
 
-	public void change() {
+	/// <summary>
+	/// Loads the main scene. 
+	/// </summary>
+	public void LoadScene() {
 		Application.LoadLevel ("Main");
 	}
 
+	/// <summary>
+	/// Delays the text fading in. 
+	/// </summary>
 	private IEnumerator Wait() {
 		yield return new WaitForSeconds (2.0f);
 		name = true;
