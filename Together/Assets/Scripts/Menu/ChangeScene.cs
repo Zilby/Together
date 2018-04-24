@@ -7,12 +7,13 @@ using UnityEngine.UI;
 /// <summary>
 /// Changes the scene from the menu. 
 /// </summary>
-public class ChangeScene : MonoBehaviour {
+public class ChangeScene : MonoBehaviour
+{
 
 	/// <summary>
 	/// Text that says press space.
 	/// </summary>
-	public Text t; 
+	public Text t;
 
 	/// <summary>
 	/// Developer name text. 
@@ -34,33 +35,44 @@ public class ChangeScene : MonoBehaviour {
 	/// </summary>
 	private bool transparent;
 
-	void Start() {
+	void Start()
+	{
 		Cursor.visible = false;
-		wait = true; 
+		wait = true;
 		nameFadeIn = false;
 		transparent = true;
-		StartCoroutine (Wait ());
+		StartCoroutine(Wait());
 	}
 
-	void Update() {
-		if (Input.GetKey ("escape")) {
-			Application.Quit ();
+	void Update()
+	{
+		if (Input.GetKey("escape"))
+		{
+			Application.Quit();
 		}
-		if (nameFadeIn) {
-			n.color = Color.Lerp (n.color, new Color (1, 1, 1, 1), 1.2f * Time.deltaTime);
-			if (n.color.a > 0.95) {
+		if (nameFadeIn)
+		{
+			n.color = Color.Lerp(n.color, new Color(1, 1, 1, 1), 1.2f * Time.deltaTime);
+			if (n.color.a > 0.95)
+			{
 				nameFadeIn = false;
 			}
 		}
-		if (!wait) {
-			if (transparent) {
-				t.color = Color.Lerp (t.color, new Color (1, 1, 1, 1), 1.2f * Time.deltaTime);
-				if (t.color.a > 0.9) {
+		if (!wait)
+		{
+			if (transparent)
+			{
+				t.color = Color.Lerp(t.color, new Color(1, 1, 1, 1), 1.2f * Time.deltaTime);
+				if (t.color.a > 0.9)
+				{
 					transparent = false;
 				}
-			} else {
-				t.color = Color.Lerp (t.color, new Color (1, 1, 1, 0), 1.5f * Time.deltaTime);
-				if (t.color.a < 0.05) {
+			}
+			else
+			{
+				t.color = Color.Lerp(t.color, new Color(1, 1, 1, 0), 1.5f * Time.deltaTime);
+				if (t.color.a < 0.05)
+				{
 					transparent = true;
 				}
 			}
@@ -70,17 +82,19 @@ public class ChangeScene : MonoBehaviour {
 	/// <summary>
 	/// Loads the main scene. 
 	/// </summary>
-	public void LoadScene() {
+	public void LoadScene()
+	{
 		SceneManager.LoadScene("Main");
 	}
 
 	/// <summary>
 	/// Delays the text fading in. 
 	/// </summary>
-	private IEnumerator Wait() {
-		yield return new WaitForSeconds (2.0f);
+	private IEnumerator Wait()
+	{
+		yield return new WaitForSeconds(2.0f);
 		nameFadeIn = true;
-		yield return new WaitForSeconds (3.0f);
+		yield return new WaitForSeconds(3.0f);
 		wait = false;
 	}
 }

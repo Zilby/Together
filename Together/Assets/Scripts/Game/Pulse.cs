@@ -5,12 +5,13 @@ using UnityEngine;
 /// <summary>
 /// Creates a pulse effect behind the heart for visuals. 
 /// </summary>
-public class Pulse : MonoBehaviour {
+public class Pulse : MonoBehaviour
+{
 
 	/// <summary>
 	/// The player heart. 
 	/// </summary>
-    public Beat heart;
+	public Beat heart;
 
 	/// <summary>
 	/// The background material.
@@ -29,42 +30,45 @@ public class Pulse : MonoBehaviour {
 
 
 	// Use this for initialization 
-	void Start () {
-        background = GetComponent<MeshRenderer>().material;
-        background.color = Color.black;
-        blacked = true;
+	void Start()
+	{
+		background = GetComponent<MeshRenderer>().material;
+		background.color = Color.black;
+		blacked = true;
 		heartRender = heart.GetComponent<SpriteRenderer>();
-    }
-
-
-	// Update is called once per frame
-	void FixedUpdate () {
-		if(heart.Dying)
-        {
-            Destroy(gameObject);
-        }
-		if (heart.Beating)
-        {
-            // sets transparency to none for full duration of beat
-            background.color = Color.white;
-            SetToHeartColor();
-            if (blacked)
-            {
-                // rotates beat randomly if first appearance
-                Vector3 temp = GetComponent<Transform>().localEulerAngles;
-				temp.z = (temp.z + 45 + Random.Range(0, 270)) % 360;
-				transform.localEulerAngles = temp;
-                blacked = false;
-            }
-        } 
-        else if (background.color != Color.black)
-        {
-			FadeBeat();
-        }
 	}
 
 
-	public void Update() {
+	// Update is called once per frame
+	void FixedUpdate()
+	{
+		if (heart.Dying)
+		{
+			Destroy(gameObject);
+		}
+		if (heart.Beating)
+		{
+			// sets transparency to none for full duration of beat
+			background.color = Color.white;
+			SetToHeartColor();
+			if (blacked)
+			{
+				// rotates beat randomly if first appearance
+				Vector3 temp = GetComponent<Transform>().localEulerAngles;
+				temp.z = (temp.z + 45 + Random.Range(0, 270)) % 360;
+				transform.localEulerAngles = temp;
+				blacked = false;
+			}
+		}
+		else if (background.color != Color.black)
+		{
+			FadeBeat();
+		}
+	}
+
+
+	public void Update()
+	{
 		transform.position = heart.transform.position;
 	}
 
@@ -73,18 +77,18 @@ public class Pulse : MonoBehaviour {
 	/// Sets the r and b color components of the pulsing to that of the heart.
 	/// </summary>
 	private void SetToHeartColor()
-    {
-        Color c = background.color;
+	{
+		Color c = background.color;
 		c.b = heartRender.material.color.b;
-        c.r = heartRender.material.color.r;
-        background.color = c;
-    }
+		c.r = heartRender.material.color.r;
+		background.color = c;
+	}
 
 
 	/// <summary>
 	/// Fades the beat if it's visible. 
 	/// </summary>
-	private void FadeBeat() 
+	private void FadeBeat()
 	{
 		SetToHeartColor();
 		Color c = background.color;
