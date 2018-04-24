@@ -73,11 +73,6 @@ public class Beat : MonoBehaviour
 	public ParticleSystem blood;
 
 	/// <summary>
-	/// Whether or not the player has reached the end of the game. 
-	/// </summary>
-	public bool end;
-
-	/// <summary>
 	/// The timer for the heart beat. 
 	/// </summary>
 	protected float timer;
@@ -157,7 +152,6 @@ public class Beat : MonoBehaviour
 		StartCoroutine(Stressed());
 		SetPitch();
 		SetColor();
-		end = false;
 	}
 
 	protected void FixedUpdate()
@@ -301,7 +295,7 @@ public class Beat : MonoBehaviour
 	/// </summary>
 	protected IEnumerator Stressed()
 	{
-		while (!end)
+		while (!GameController.ending)
 		{
 			if (Frequency <= 20)
 			{

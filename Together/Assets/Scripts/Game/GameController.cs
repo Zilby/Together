@@ -35,10 +35,24 @@ public class GameController : MonoBehaviour
 	/// </summary>
 	public Text arrows;
 
-	public GameObject gameover;
+	/// <summary>
+	/// The gameover disillusional text. 
+	/// </summary>
+	public Text gameover;
+
+	/// <summary>
+	/// Whether or not the game has finished. 
+	/// </summary>
 	private bool over;
+
+	/// <summary>
+	/// The dialogue text box. 
+	/// </summary>
 	public Text dialogue;
-	// set the response to the location you want it to go to after
+
+	/// <summary>
+	/// The current dialogue text index. 
+	/// </summary>
 	private int location;
 
 	/// <summary>
@@ -61,6 +75,9 @@ public class GameController : MonoBehaviour
 	/// </summary>
 	private List<string> dialogueTexts = new List<string>();
 
+	/// <summary>
+	/// Whether or not the heart is currently cracking. 
+	/// </summary>
 	private bool cracking;
 
 	/// <summary>
@@ -103,6 +120,10 @@ public class GameController : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	private int index;
+
+	/// <summary>
+	/// Whether or not the player has reached the end of the game. 
+	/// </summary>
 	public static bool ending;
 
 	public void Start()
@@ -112,7 +133,7 @@ public class GameController : MonoBehaviour
 		letterPause = 0.005f;
 		typing = false;
 		skip = false;
-		gameover.SetActive(false);
+		gameover.gameObject.SetActive(false);
 		ending = false;
 		pressSpace = false;
 		speed = 1;
@@ -150,6 +171,8 @@ public class GameController : MonoBehaviour
 		{
 			Application.Quit();
 		}
+		// If fade in is activated but press space is not
+		// fade in the arrows text. 
 		if (fadeIn && !pressSpace)
 		{
 			arrows.color = Color.Lerp(arrows.color, new Color(1, 1, 1, 1), 1.2f * Time.deltaTime);
@@ -168,6 +191,7 @@ public class GameController : MonoBehaviour
 				arrows.enabled = false;
 			}
 		}
+		// If press space is activated, fade in the space text
 		if (pressSpace)
 		{
 			if (fadeIn)
@@ -193,66 +217,69 @@ public class GameController : MonoBehaviour
 
 	public void FixedUpdate()
 	{
-		if (over)
+		if (!over)
 		{
-
-		}
-		else if (heart == null)
-		{
-			foreach (GameObject obj in texts)
+			// Create gameover message if heart has been destroyed. 
+			if (heart == null)
 			{
-				if (obj)
+				foreach (GameObject obj in texts)
 				{
-					obj.SetActive(false);
+					if (obj)
+					{
+						obj.SetActive(false);
+					}
 				}
-			}
-			stress.text = "";
-			compassion.text = "";
-			love.text = "";
-			string[] messages = { "Again?", "Maybe Next Time", "Broken", "The End",
+				stress.text = "";
+				compassion.text = "";
+				love.text = "";
+				string[] messages = { "Again?", "Maybe Next Time", "Broken", "The End",
 				"It Was Never Real", "Get Over It", "Love Is A Myth" };
-			gameover.SetActive(true);
-			gameover.GetComponent<Button>().GetComponent<Text>().text = messages[Random.Range(0, 7)];
-			over = true;
-		}
-		else
-		{
-			if (ending)
-			{
-				if (location == 20)
-				{
-					StartCoroutine(End());
-				}
+				gameover.gameObject.SetActive(true);
+				gameover.text = messages[Random.Range(0, 7)];
+				over = true;
 			}
 			else
 			{
-				if (counter <= 0 && index < texts.Count)
+				// continually set the stats
+				stress.text = "Stress: " + (100 - heart.Frequency);
+				compassion.text = "Compassion: " + (100 - heart.Frozen);
+				love.text = "Love: " + (heart.Love);
+
+				// if we've reached the end, start the end coroutine
+				if (ending)
 				{
-					texts[index].SetActive(true);
-					counter = 200 / speed;
-					index++;
-					if (index % 5 == 0)
+					if (location == 20)
 					{
-						speed += 0.03f;
+						StartCoroutine(End());
 					}
 				}
-				else if (index == texts.Count && !texts[texts.Count - 1])
-				{
-					ending = true;
-					heart.end = true;
-					dialogue.gameObject.SetActive(true);
-					Talk();
-				}
+
+				// otherwise continue sending texts down
 				else
 				{
-					counter--;
+					if (counter <= 0 && index < texts.Count)
+					{
+						texts[index].SetActive(true);
+						counter = 200 / speed;
+						index++;
+						if (index % 5 == 0)
+						{
+							speed += 0.03f;
+						}
+					}
+					else if (index == texts.Count && !texts[texts.Count - 1])
+					{
+						ending = true;
+						dialogue.gameObject.SetActive(true);
+						Talk();
+					}
+					else
+					{
+						counter--;
+					}
 				}
 			}
-			stress.text = "Stress: " + (100 - heart.Frequency);
-			compassion.text = "Compassion: " + (100 - heart.Frozen);
-			love.text = "Love: " + (heart.Love);
 		}
-
 	}
 
 	/// <summary>
@@ -298,6 +325,9 @@ public class GameController : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Creates the dialogue scene at the end of the game. 
+	/// </summary>
 	public void Talk()
 	{
 		if (typing)
@@ -339,6 +369,9 @@ public class GameController : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Causes a dialogue induced crack. 
+	/// </summary>
 	public IEnumerator Crack()
 	{
 		dialogue.text = "";
@@ -360,6 +393,9 @@ public class GameController : MonoBehaviour
 		location++;
 	}
 
+	/// <summary>
+	/// Waits 6 seconds once the player has reached the last dialogue and then loads the menu. 
+	/// </summary>
 	public IEnumerator End()
 	{
 		location++;
@@ -367,12 +403,18 @@ public class GameController : MonoBehaviour
 		SceneManager.LoadScene("Menu");
 	}
 
+	/// <summary>
+	/// Waits for half a second and then sets the arrows text to fade in. 
+	/// </summary>
 	public IEnumerator Arrows()
 	{
 		yield return new WaitForSeconds(0.5f);
 		fadeIn = true;
 	}
 
+	/// <summary>
+	/// Waits four seconds and then sets the press space text to fade in. 
+	/// </summary>
 	private IEnumerator PressSpace()
 	{
 		yield return new WaitForSeconds(4.0f);
