@@ -4,114 +4,142 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Controls the game, but most notably the ending sequence. 
+/// </summary>
 public class GameController : MonoBehaviour {
 
-	public GameObject heart;
-	private Beat h;
+	/// <summary>
+	/// The player heart.
+	/// </summary>
+	public Beat heart;
+
+	/// <summary>
+	/// The stress UI visual.
+	/// </summary>
 	public Text stress;
+
+	/// <summary>
+	/// The compassion UI visual.
+	/// </summary>
 	public Text compassion;
+
+	/// <summary>
+	/// The love UI visual.
+	/// </summary>
 	public Text love;
+
+	/// <summary>
+	/// Instructional control scheme text. 
+	/// </summary>
 	public Text arrows;
+
 	public GameObject gameover;
-	public bool over;
-	public bool selected;
-	public Button dialogue; 
-	private bool narrating;
+	private bool over;
+	public Text dialogue; 
 	// set the response to the location you want it to go to after
 	private int location;
-	//private int curr;
-	private float letterPause; // amount of time before another letter is typed
-	private bool typing; // whether the current dialogue is being typed
-	private bool skip; // true if you want to skip the text delay
-	//private bool option1; // for exhausting an option from a selection
-	//private bool option2; 
-	//private bool option3; 
-	//private List<string[]> optionsTexts = new List<string[]>();
-	//private List<string[]> dialogueTexts = new List<string[]>();
+
+	/// <summary>
+	/// The amount of time before another letter is typed. 
+	/// </summary>
+	private float letterPause;
+
+	/// <summary>
+	/// Whether the current dialogue is being typed.
+	/// </summary>
+	private bool typing;
+
+	/// <summary>
+	/// True if the player wants to skip the text delay.
+	/// </summary>
+	private bool skip;
+
+	/// <summary>
+	/// The dialogue texts.
+	/// </summary>
     private List<string> dialogueTexts = new List<string>();
 
     private bool cracking;
+
+	/// <summary>
+	/// Whether or not something is currently fading in. 
+	/// </summary>
 	private bool fadeIn;
+
+	/// <summary>
+	/// Whether or not something is currently fading out. 
+	/// </summary>
 	private bool fadeOut;
-    public static float speed; // speed/frequency of the falling text 
+
+	/// <summary>
+	/// Both the speed and frequency of the falling text. 
+	/// </summary>
+    public static float speed; 
+
+	/// <summary>
+	/// Text indicating that the player should press the spacebar. 
+	/// </summary>
 	public Text space;
+
+	/// <summary>
+	/// Whether or not the spacebar text should be active. 
+	/// </summary>
 	private bool pressSpace;
 
+	/// <summary>
+	/// The list of falling texts. 
+	/// </summary>
 	public List<GameObject> texts; 
+
+	/// <summary>
+	/// Timed counter indicating the next falling text. 
+	/// </summary>
 	private float counter;
+
+	/// <summary>
+	/// The current falling text index. 
+	/// </summary>
+	[SerializeField]
 	private int index;
     public static bool ending;
 
 	public void Start() {
 		over = false;
-		//slightRedirect = false;
-		//response = -1;
-		//response2 = -1; 
 		location = 0;
 		letterPause = 0.005f;
 		typing = false;
 		skip = false;
-		//option1 = true;
-		//option2 = true;
-		//option3 = true;
-		h = heart.GetComponent<Beat>();
         gameover.SetActive(false);
         ending = false;
-        //InitializeText();
-        //TransitionToTalk ();
 		pressSpace = false;
         speed = 1;
         cracking = false;
 		StartCoroutine (Arrows ());
 
 
-		index = 0; 
+		index = 0;
 		counter = 150;
-        string template = "";  // "template"
-        for (int i = 0; i < 2000; i++)
-        {
-            dialogueTexts.Add(template);
-        }
-        string dialogue0 = "They love you";
-        dialogueTexts[0] = dialogue0;
-        string dialogue1 = "But over time feelings change";
-        dialogueTexts[1] = dialogue1;
-        string dialogue2 = "Love is fleeting and the past, only memories";
-        dialogueTexts[2] = dialogue2;
-        string dialogue3 = "Even though you still feel the same love towards them";
-        dialogueTexts[3] = dialogue3;
-        string dialogue4 = "They will never feel the same way about you"; 
-        dialogueTexts[4] = dialogue4;
-        string dialogue5 = "They break up with you";  // crack love - 25
-        dialogueTexts[5] = dialogue5;
-        string dialogue6 = ". . .";
-        dialogueTexts[6] = dialogue6;
-        string dialogue7 = "You feel lost";
-        dialogueTexts[7] = dialogue7;
-        string dialogue8 = "They were your whole world";
-        dialogueTexts[8] = dialogue8;
-        string dialogue9 = "What made you get up in the morning"; // crack love - 25
-        dialogueTexts[9] = dialogue9;
-        string dialogue10 = "What brought you joy during hard times"; // crack love - 25
-        dialogueTexts[10] = dialogue10;
-        string dialogue11 = "What gave your life purpose"; 
-        dialogueTexts[11] = dialogue11;
-        string dialogue12 = ". . .";
-        dialogueTexts[12] = dialogue12;
-        string dialogue13 = "You can't live like this";
-        dialogueTexts[13] = dialogue13;
-        string dialogue14 = "Without something to live for";
-        dialogueTexts[14] = dialogue14;
-        string dialogue15 = "You consider ending it all"; 
-        dialogueTexts[15] = dialogue15;
-        string dialogue16 = ". . ."; // final crack
-        dialogueTexts[16] = dialogue16;
-        string dialogue17 = "But you don't";
-        dialogueTexts[17] = dialogue17;
-        string dialogue18 = "Because even if you'll never get back together";
-        dialogueTexts[18] = dialogue18;
-        string dialogue19 = "Maybe someday you'll be able to feel the same love again";
-        dialogueTexts[19] = dialogue19;
+		dialogueTexts.Add("They love you");
+		dialogueTexts.Add("But over time feelings change");
+		dialogueTexts.Add("Love is fleeting and the past, only memories");
+		dialogueTexts.Add("Even though you still feel the same love towards them");
+		dialogueTexts.Add("They will never feel the same way about you");
+		dialogueTexts.Add("They break up with you"); // crack love - 25
+		dialogueTexts.Add(". . .");
+		dialogueTexts.Add("You feel lost");
+		dialogueTexts.Add("They were your whole world");
+		dialogueTexts.Add("What made you get up in the morning"); // crack love - 25
+		dialogueTexts.Add("What brought you joy during hard times"); // crack love - 25
+		dialogueTexts.Add("What gave your life purpose");
+		dialogueTexts.Add(". . .");
+		dialogueTexts.Add("You can't live like this");
+		dialogueTexts.Add("Without something to live for");
+		dialogueTexts.Add("You consider ending it all");
+		dialogueTexts.Add(". . ."); // final crack
+		dialogueTexts.Add("But you don't");
+		dialogueTexts.Add("Because even if you'll never get back together");
+		dialogueTexts.Add("Maybe someday you'll be able to feel the same love again");
     }
 
 	void Update() {
@@ -190,7 +218,7 @@ public class GameController : MonoBehaviour {
                 else if (index == texts.Count && !texts[texts.Count - 1])
                 {
                     ending = true;
-                    h.end = true;
+                    heart.end = true;
                     dialogue.gameObject.SetActive(true);
                     Talk();
                 }
@@ -199,42 +227,50 @@ public class GameController : MonoBehaviour {
                     counter--;
                 }
             }
-            stress.text = "Stress: " + (100 - h.Frequency);
-			compassion.text = "Compassion: " + (100 - h.Frozen);
-			love.text = "Love: " + (h.Love);
+            stress.text = "Stress: " + (100 - heart.Frequency);
+			compassion.text = "Compassion: " + (100 - heart.Frozen);
+			love.text = "Love: " + (heart.Love);
 		}
         
 	}
 
+	/// <summary>
+	/// Restarts the game from the menu. 
+	/// </summary>
 	public void Restart()
 	{
 		SceneManager.LoadScene("Menu");
 	}
 
+
+	/// <summary>
+	/// Types the given message on screen. 
+	/// </summary>
+	/// <returns>The text.</returns>
     IEnumerator TypeText(string message)
     {
         if (!cracking)
         {
             typing = true;
             string current = "";
-            dialogue.GetComponent<Text>().text = "";
+            dialogue.text = "";
             char[] m = message.ToCharArray();
             for (int i = 0; i < message.Length; i++)
             {
                 if (skip)
                 {
-                    dialogue.GetComponent<Text>().text = message;
+                    dialogue.text = message;
                     skip = false;
                     break;
                 }
                 current += m[i];
-                dialogue.GetComponent<Text>().text = current;
-                dialogue.GetComponent<Text>().text += "<color=#00000000>";
+                dialogue.text = current;
+                dialogue.text += "<color=#00000000>";
                 for (int j = i + 1; j < message.Length; j++)
                 {
-                    dialogue.GetComponent<Text>().text += m[j];
+                    dialogue.text += m[j];
                 }
-                dialogue.GetComponent<Text>().text += "</color>";
+                dialogue.text += "</color>";
                 yield return new WaitForSeconds(letterPause);
             }
             typing = false;
@@ -247,16 +283,16 @@ public class GameController : MonoBehaviour {
         {
             skip = true;
         }
-        else if ((location == 6 || location == 10 || location == 11 || location == 17) && h.Love > 0 && !cracking)
+        else if ((location == 6 || location == 10 || location == 11 || location == 17) && heart.Love > 0 && !cracking)
         {
-			if (!(location == 17) || h.Love > 10) {
+			if (!(location == 17) || heart.Love > 10) {
 				cracking = true;
 				StartCoroutine (Crack ());
 			} else {
-				h.Love = 0;
+				heart.Love = 0;
 			}
         }
-        else if (!cracking)
+		else if (!cracking && location < dialogueTexts.Count)
         {
             StartCoroutine(TypeText(dialogueTexts[location]));
 			if (location == 0 && !space.enabled) {
@@ -272,23 +308,22 @@ public class GameController : MonoBehaviour {
         }
         if (location == 18)
         {
-            h.Frequency = 80;
+            heart.Frequency = 80;
         }
     }
 
     public IEnumerator Crack()
     {
-        string temp = dialogue.GetComponent<Text>().text;
-        dialogue.GetComponent<Text>().text = "";
+        dialogue.text = "";
         yield return new WaitForSeconds(0.5f);
-        h.Love -= 25;
-        h.Frequency -= 10;
-        if (h.Frequency < 10)
+        heart.Love -= 25;
+        heart.Frequency -= 10;
+        if (heart.Frequency < 10)
         {
-            h.Frequency = 10;
+            heart.Frequency = 10;
         }
-        h.Crack();
-        if(h.cracks == 4)
+        heart.Crack();
+        if(heart.cracks == 4)
         {
             dialogue.gameObject.SetActive(false);
         }
